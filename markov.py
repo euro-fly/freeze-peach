@@ -51,7 +51,10 @@ class MarkovChainer(object):
         if len(res)==self.order:
             nw = True
             while nw != None:
-                restup = (res[-2], res[-1])
+                if len(res) > 1:
+                    restup = (res[-2], res[-1])
+                else:
+                    restup = (res[-1], res[-1])
                 try:
                     nw = self.next_word_for(restup)
                     if nw != None:
@@ -60,7 +63,10 @@ class MarkovChainer(object):
                         continue
                 except:
                     nw = False
-            new_res = res[0:-2]
+            if len(res) > 1:
+                new_res = res[0:-2]
+            else:
+                new_res = res
             if new_res[0].istitle() or new_res[0].isupper():
                 pass
             else:
@@ -68,7 +74,10 @@ class MarkovChainer(object):
             sentence = ""
             for word in new_res:
                 sentence += word + " "
-            sentence += res[-2] + res[-1]
+            if len(res) > 1:
+                sentence += res[-2] + res[-1]
+            else:
+                sentence += res[-1]
 
         else:
             sentence = None
