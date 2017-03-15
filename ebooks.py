@@ -34,7 +34,7 @@ def entity(text):
 def filter_tweet(tweet):
     tweet.text = re.sub(r'\b(RT|MT) .+','',tweet.text) #take out anything after RT or MT
     tweet.text = re.sub(r'(\#|@|(h\/t)|(http))\S+','',tweet.text) #Take out URLs, hashtags, hts, etc.
-    tweet.text = re.sub(r'\n','', tweet.text) #take out new lines.
+    # tweet.text = re.sub(r'\n','', tweet.text) #take out new lines.
     tweet.text = re.sub(r'\"|\(|\)', '', tweet.text) #take out quotes.
     htmlsents = re.findall(r'&\w+;', tweet.text)
     if len(htmlsents) > 0 :
