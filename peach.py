@@ -35,35 +35,37 @@ for bad in bigbads:
         
         baddie = api.GetUser(screen_name=bad)
         source = baddie.screen_name
-        print "Blocking user " + source
+        #print "Blocking user " + source
         api.CreateBlock(screen_name = source)
-        print "Successfully blocked!"
+        #print "Successfully blocked!"
         badslist[baddie.id] = True
         try:
             bad_follows = api.GetFollowersPaged(screen_name = source)
             while True:
                 next_cursor = bad_follows[0]
-                print "Retrieved a batch of " + str(len(bad_follows)) + " followers."
+                #print "Retrieved a batch of " + str(len(bad_follows[2])) + " followers."
                 for follow in bad_follows[2]:
                     try:
                         #print "Checking status of user " + follow.screen_name + "..."
                         if follow.id not in badslist:
-                            badslist[follow.id] = True
+                            badslist[follow.id] = False
                         else:
-                            print "Blocking user " + follow.screen_name
-                            api.CreateBlock(screen_name=follow.screen_name)
-                            print "Successfully blocked!"
+                            if badslist[follow.id] == False:
+                                #print "Blocking user " + follow.screen_name
+                                api.CreateBlock(screen_name=follow.screen_name)
+                                #print "Successfully blocked!"
+                                badslist[follow.id] = True
                     except:
-                        print "Something bad happened when we tried to process a follower."
+                        #print "Something bad happened when we tried to process a follower."
                 if (next_cursor == 0):
                     break
                 else:
-                    print "Sleeping..."
+                    #print "Sleeping..."
                     time.sleep(10)
                     bad_follows = api.GetFollowersPaged(screen_name = source, cursor=next_cursor)
-                
         except:
-            print "We couldn't get the followers..."
-        
+            #print "We couldn't get the followers..."
+            pass
     except:
-        print "Error, we couldn't get user data for that baddie."
+        #print "Error, we couldn't get user data for that baddie."
+        pass
